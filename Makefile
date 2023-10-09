@@ -1,6 +1,8 @@
-build:
+install:
 	mvn clean install
+
+build:
 	sam build
 
-local: build
-	sam local start-api --warm-containers lazy
+local: install build
+	sam local start-api
