@@ -1,9 +1,12 @@
 package devsimiyu.samserverless.core;
 
-import devsimiyu.samserverless.core.model.Address;
-import devsimiyu.samserverless.core.model.User;
+import devsimiyu.samserverless.core.model.dto.Address;
+import devsimiyu.samserverless.core.model.dto.TodoItem;
+import devsimiyu.samserverless.core.model.dto.User;
+import devsimiyu.samserverless.core.model.entity.Todo;
 import devsimiyu.samserverless.core.security.Jwt;
 import devsimiyu.samserverless.core.services.PingService;
+import devsimiyu.samserverless.core.services.TodoService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.Default;
@@ -15,8 +18,7 @@ import jakarta.enterprise.inject.spi.Extension;
 public class Main {
 
     public static void main(String[] args) {
-        SeContainerInitializer containerInitializer = SeContainerInitializer.newInstance();
-        containerInitializer.addExtensions(new Extension() {
+        SeContainerInitializer containerInitializer = SeContainerInitializer.newInstance().addExtensions(new Extension() {
             public void addJwt(@Observes AfterBeanDiscovery event) {
                 System.out.println("AfterBeanDiscovery Extension CALLED!!");
                 event.addBean().types(Jwt.class).scope(ApplicationScoped.class).addQualifier(Default.Literal.INSTANCE).createWith(obj -> new Jwt("jwt token string from main"
@@ -24,13 +26,11 @@ public class Main {
             }
         });
         try (SeContainer container = containerInitializer.initialize()) {
-            PingService pingService = container.select(PingService.class).get();
-            User user = new User();
-            Address address = new Address();
-            user.name = "";
-            user.email = "mail";
-            user.address = address;
-            System.out.println(pingService.sayHello(user));
+            TodoService todoService = container.select(TodoService.class).get();
+            Todo todo = todoService.createTodo();
+            System.out.println("Created Todo: " + todo);
+            TodoItem todoItem = todoService.getTodo(todo.id);
+            System.out.println("Get TodoItem: " + todoItem.getId());
         }
     }
 }

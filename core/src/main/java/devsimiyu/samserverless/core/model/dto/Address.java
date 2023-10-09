@@ -1,4 +1,4 @@
-package devsimiyu.samserverless.core.model;
+package devsimiyu.samserverless.core.model.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
