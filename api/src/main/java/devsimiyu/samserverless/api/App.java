@@ -29,8 +29,7 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
         containerInitializer.addExtensions(new Extension() {
             public void addJwt(@Observes AfterBeanDiscovery event) {
                 System.out.println("AfterBeanDiscovery Extension CALLED!!");
-                event.addBean().types(Jwt.class).scope(ApplicationScoped.class).addQualifier(Default.Literal.INSTANCE).createWith(obj -> new Jwt("jwt token string from main"
-                ));
+                event.addBean().types(Jwt.class).scope(ApplicationScoped.class).addQualifier(Default.Literal.INSTANCE).createWith(obj -> (Jwt) () -> "jwt token string from main");
             }
         });
 

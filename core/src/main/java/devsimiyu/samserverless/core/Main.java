@@ -18,11 +18,11 @@ import jakarta.enterprise.inject.spi.Extension;
 public class Main {
 
     public static void main(String[] args) {
+        String token = "jwt primitive token string from main";
         SeContainerInitializer containerInitializer = SeContainerInitializer.newInstance().addExtensions(new Extension() {
             public void addJwt(@Observes AfterBeanDiscovery event) {
                 System.out.println("AfterBeanDiscovery Extension CALLED!!");
-                event.addBean().types(Jwt.class).scope(ApplicationScoped.class).addQualifier(Default.Literal.INSTANCE).createWith(obj -> new Jwt("jwt token string from main"
-                ));
+                event.addBean().types(Jwt.class).scope(ApplicationScoped.class).addQualifiers(Default.Literal.INSTANCE).createWith(context -> (Jwt) () -> token);
             }
         });
         try (SeContainer container = containerInitializer.initialize()) {

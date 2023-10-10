@@ -1,6 +1,6 @@
 package devsimiyu.samserverless.core.interceptors;
 
-import devsimiyu.samserverless.core.security.Jwt;
+import devsimiyu.samserverless.core.security.Principal;
 import devsimiyu.samserverless.core.security.Role;
 import jakarta.inject.Inject;
 import jakarta.interceptor.AroundInvoke;
@@ -15,12 +15,12 @@ import java.util.List;
 public class AuthImpl {
 
     @Inject
-    Jwt jwt;
+    Principal principal;
 
     @AroundInvoke
     public Object intercept(InvocationContext context) throws Exception {
         List<Role> role = Arrays.asList(context.getMethod().getAnnotation(Auth.class).value());
-        if (jwt.getRoles().stream().noneMatch(role::contains)) throw new Exception("NOT AUTHORIZED");
+        if (principal.getRoles().stream().noneMatch(role::contains)) throw new Exception("NOT AUTHORIZED");
         return context.proceed();
     }
 }
