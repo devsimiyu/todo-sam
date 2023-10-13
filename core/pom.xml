@@ -42,6 +42,42 @@
             <artifactId>mongodb-driver-sync</artifactId>
             <version>4.9.1</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.3.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>9.22.2</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.transaction</groupId>
+            <artifactId>jakarta.transaction-api</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-jta</artifactId>
+            <version>6.0.0</version> <!-- Commercial, for open source use version 6.0.0 -->
+            <classifier>jakarta</classifier>
+        </dependency>
     </dependencies>
 
     <build>
@@ -52,6 +88,21 @@
                 <configuration>
                     <source>16</source>
                     <target>16</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <configuration>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <url>${env.POSTGRES_JDBC}</url>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <user>${env.POSTGRES_USER}</user>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <password>${env.POSTGRES_PASSWORD}</password>
+                    <!--suppress UnresolvedMavenProperty -->
+                    <schemas>${env.POSTGRES_SCHEMA}</schemas>
+                    <locations>filesystem:src/main/resources/flyway</locations>
                 </configuration>
             </plugin>
         </plugins>

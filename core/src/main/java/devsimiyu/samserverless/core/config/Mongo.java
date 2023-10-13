@@ -18,14 +18,13 @@ public class Mongo {
     @ApplicationScoped
     public MongoClient createMongoClient() {
         String mongoUri = System.getenv("MONGO_URI");
-        MongoClient mongoClient = MongoClients.create(mongoUri);
-        System.out.println("Created MongoClient: " + mongoClient);
-        return mongoClient;
+        return MongoClients.create(mongoUri);
     }
 
     @Produces
     public MongoRepositoryFactory createMongoRepositoryFactory(MongoClient mongoClient) {
-        MongoOperations mongoOperations = new MongoTemplate(mongoClient, System.getenv("MONGO_DB"));
+        String mongoDatabase = System.getenv("MONGO_DB");
+        MongoOperations mongoOperations = new MongoTemplate(mongoClient, mongoDatabase);
         return new MongoRepositoryFactory(mongoOperations);
     }
 
@@ -34,8 +33,5 @@ public class Mongo {
         return mongoRepositoryFactory.getRepository(TodoRepository.class);
     }
 
-    public void destroyMongoClient(@Disposes MongoClient mongoClient) {
-        System.out.println("Disposing MongoClient: " + mongoClient);
-        mongoClient.close();
-    }
+    public void destroyMongoClient(@Disposes MongoClient mongoClient) { mongoClient.close(); }
 }

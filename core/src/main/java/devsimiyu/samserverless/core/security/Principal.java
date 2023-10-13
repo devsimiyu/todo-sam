@@ -15,9 +15,6 @@ public class Principal {
         return "";
     }
 
-    public List<Role> getRoles() {
-        System.out.println("Roles from JWT: " + token.get());
-        return List.of(Role.ADMIN);
-    }
+    public List<Role> getRoles() { return List.of(Role.ADMIN); }
 
 }

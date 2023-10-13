@@ -6,5 +6,6 @@
     <interceptors>
         <class>devsimiyu.samserverless.core.interceptors.AuthImpl</class>
         <class>devsimiyu.samserverless.core.interceptors.ValidateImpl</class>
+        <class>devsimiyu.samserverless.core.interceptors.TransactionalImpl</class>
     </interceptors>
 </beans>

@@ -1,0 +1,61 @@
+version: '2.9'
+
+services:
+
+  todo-sam-postgres:
+    image: postgres:latest
+    container_name: todo-sam-postgres
+    healthcheck:
+      test: pg_isready
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    volumes:
+      - todo-sam-postgres-volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=todo-sam
+    ports:
+      - '1000:5432'
+
+  todo-sam-pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: todo-sam-pgadmin
+    volumes:
+      - todo-sam-pgadmin-volume:/var/lib/pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@todo-sam.com
+      - PGADMIN_DEFAULT_PASSWORD=password
+    ports:
+      - '1001:80'
+    depends_on:
+      todo-sam-postgres:
+        condition: service_healthy
+
+  todo-sam-mongo:
+    image: mongo:latest
+    container_name: todo-sam-mongo
+    volumes:
+      - todo-sam-mongo-volume:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - '1002:27017'
+
+volumes:
+
+  todo-sam-mongo-volume:
+    driver: local
+
+  todo-sam-postgres-volume:
+    driver: local
+
+  todo-sam-pgadmin-volume:
+    driver: local
+
+networks:
+
+  default:
+    name: todo-sam-net
