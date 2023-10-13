@@ -1,7 +1,7 @@
 package devsimiyu.samserverless.core.interceptors;
 
 import devsimiyu.samserverless.core.security.Principal;
-import devsimiyu.samserverless.core.security.Role;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.interceptor.AroundInvoke;
 import jakarta.interceptor.Interceptor;
@@ -19,7 +19,8 @@ public class AuthImpl {
 
     @AroundInvoke
     public Object intercept(InvocationContext context) throws Exception {
-        List<Role> role = Arrays.asList(context.getMethod().getAnnotation(Auth.class).value());
+        List<String> role = Arrays.asList(context.getMethod().getAnnotation(RolesAllowed.class).value());
+        System.out.println("Roles Allowed: " + role);
         if (principal.getRoles().stream().noneMatch(role::contains)) throw new Exception("NOT AUTHORIZED");
         return context.proceed();
     }
