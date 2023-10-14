@@ -1,0 +1,12 @@
+spring:
+
+  data:
+    mongodb:
+      url: ${MONGO_URI}
+      database: ${MONGO_DB}
+
+  datasource:
+    url: ${DB_JDBC}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER}
