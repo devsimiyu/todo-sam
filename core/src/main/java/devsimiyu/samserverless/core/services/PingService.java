@@ -9,6 +9,7 @@ import jakarta.enterprise.context.Dependent;
 public class PingService {
 
     @Validate
+    @RolesAllowed("ADMIN")
     public String sayHello(User user) {
         return "Jambo! " + user.name;
     }

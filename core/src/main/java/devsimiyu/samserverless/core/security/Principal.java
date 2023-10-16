@@ -15,6 +15,6 @@ public class Principal {
         return "";
     }
 
-    public List<String> getRoles() { return List.of(Role.DEV.name()); }
+    public List<String> getRoles() { return List.of(Role.ADMIN.name()); }
 
 }
