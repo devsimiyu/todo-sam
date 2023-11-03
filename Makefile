@@ -4,10 +4,10 @@ export
 install:
 	mvn clean install
 
-build:
+sam-build:
 	sam build
 
-local: services install build
+sam-local: install sam-build
 	sam local start-api
 
 services:
